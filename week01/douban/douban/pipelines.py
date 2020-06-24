@@ -6,6 +6,7 @@
 # See: https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 
 
-class SpidersPipeline:
+class DoubanPipeline:
     def process_item(self, item, spider):
-        return item
+        print("管道处理函数：", item)
+        #return item
