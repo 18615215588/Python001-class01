@@ -14,3 +14,4 @@ class DoubanItem(scrapy.Item):
     mov_name = scrapy.Field()
     mov_year = scrapy.Field()
     mov_director = scrapy.Field()
+    mov_info = scrapy.Field()
