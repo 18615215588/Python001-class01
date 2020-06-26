@@ -17,4 +17,4 @@ class MaoyanSpider(scrapy.Spider):
         mov_all_info = selector.xpath('//div[@class="movie-item-hover"]')
         #文本内容有可能因为格式问题而导致出现多元素的情况，可以通过getall获取所有文本然后处理
         mov_info_list = (items.MaoyanMovItem(title=mov_info.xpath('.//div[@class="movie-hover-info"][1]/div[@class="movie-hover-title"][1]/span[1]/text()')[0].get(), mov_type=mov_info.xpath('.//div[@class="movie-hover-info"][1]/div[@class="movie-hover-title"][2]/text()').getall()[1].strip(), date=mov_info.xpath('.//div[@class="movie-hover-info"][1]/div[@class="movie-hover-title movie-hover-brief"][1]/text()').getall()[1].strip()) for mov_info in mov_all_info)
-        return list(mov_info_list)[:10]
+        return (next(mov_info_list) for i in range(10))

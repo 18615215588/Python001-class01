@@ -87,8 +87,9 @@ if __name__ == "__main__":
             raise Exception("Http Request Error, Status Code:{}".format(mov_all_resp.status_code))      
         mov_all_info = bs4.BeautifulSoup(mov_all_resp.text, features="html.parser").find_all("div", {"class":"movie-item film-channel"}) #解析热门电影信息页面
         mov_info_list = (MovieInfo(mov_info.find("span", {"class":"name"}).text, mov_info.find_all("div", {"class":"movie-hover-title"})[1].text.split(":")[-1].strip(), mov_info.find_all("div", {"class":"movie-hover-title movie-hover-brief"})[0].text.split(":")[-1].strip()) for mov_info in mov_all_info)
+        #print_iterator(mov_info_list)
         #将获取到的信息写入csv文件
-        df = pandas.DataFrame(list(mov_info_list)[:10])
+        df = pandas.DataFrame(next(mov_info_list) for i in range(10))
         df.to_csv("maoyan_requests.csv", encoding="utf-8")
     except Exception as e:
         print("Exception Raised，Exception：{}".format(e))
