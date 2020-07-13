@@ -40,10 +40,7 @@ class PingResult:
 
 def ping(ip: str) -> bool:
     result = subprocess.Popen("ping -i 1 -w 100 -n 1 {}".format(ip), stdout=subprocess.PIPE, stderr=subprocess.STDOUT).stdout.read()
-    if "Reply from" in str(result):
-        return PingResult(ip, True)
-    else:
-        return PingResult(ip, False)
+    return PingResult(ip, True) if "Reply from" in str(result) else PingResult(ip, False)
 
 class TCPScanResult:
     def __init__(self, ip: str, port: int, result: bool):
@@ -79,11 +76,8 @@ def exec_ping(args: "NameSpace") -> None:
     ip_net = args.ip
     ip_list = []
     try:
-        f = None
-        fopen = False
-        if args.w != None:
-            f = open(args.w, mode="a", encoding="utf-8")
-            fopen = True
+        f, fopen = None, False
+        f, fopen = (open(args.w, mode="a", encoding="utf-8"), True) if args.w != None else (None, False)        
         ip_list = get_ip_list(ip_net)
         if args.m == "thread":
             with TPool(args.n) as pool:
@@ -121,11 +115,8 @@ def exec_ping(args: "NameSpace") -> None:
 def exec_tcp(args):
     try:
         ip_addr = args.ip
-        f = None
-        fopen = False
-        if args.w != None:
-            f = open(args.w, mode="a", encoding="utf-8")
-            fopen = True
+        f, fopen = None, False
+        f, fopen = (open(args.w, mode='a', encoding="utf-8"), True) if args.w != None else (None, False)
         if args.m == "thread":
             with TPool(args.n) as pool:
                 futures = [pool.submit(scan_tcp, ip_addr, port) for port in range(1, 1025)]
