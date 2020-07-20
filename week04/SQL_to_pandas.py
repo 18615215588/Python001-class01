@@ -23,9 +23,7 @@ data['id'].count() 或 data['id'].size
  
 5. SELECT * FROM data WHERE id<1000 AND age>30;
 
-data[data.id < 1000][data.age > 30] 或 data[data.age > 30][data.id < 1000]
-
-data[data['id'] < 1000][data['age'] > 30]
+data[(data['id'] < 1000) & (data['age'] > 30)]
  
 6. SELECT id,COUNT(DISTINCT order_id) FROM table1 GROUP BY id;
 
